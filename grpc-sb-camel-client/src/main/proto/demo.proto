@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ru.redhat.forum.demo.gen";
+option java_outer_classname = "DemoProto";
+
+package ru.redhat.forum.demo;
+
+// The Demo service definition.
+service DemoService {
+  // Sending test message and getting answer asynchronously
+  rpc TestCall (TestRequest) returns (stream TestResponse) {}
+  
+}
+
+// The test request message
+message TestRequest {
+  string name = 1;
+  int32  id   = 2;
+}
+
+// The test response message
+message TestResponse {
+  string name = 1;
+  int32  id   = 2;
+}

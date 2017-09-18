@@ -7,18 +7,19 @@ import ru.redhat.forum.demo.gen.TestRequest;
 import ru.redhat.forum.demo.gen.TestResponse;
 
 @Component
-public class GrpcServerRoute extends RouteBuilder {
+public class GrpcClientRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("grpc://localhost:1101/ru.redhat.forum.demo.gen.DemoService")
-            .bean(new GrpcMessageBuilder(), "buildTestResponse")
+        from("timer:foo?period=2000")
+            .bean(new GrpcMessageBuilder(), "buildTestRequest")
+            .to("grpc://localhost:1101/ru.redhat.forum.demo.gen.DemoService?method=TestCall")
             .log("Body: ${body}");
     }
     
     public class GrpcMessageBuilder {
-        public TestResponse buildTestResponse(TestRequest testRequest) {
-            return TestResponse.newBuilder().setName(testRequest.getName() + " World!!!").setId(testRequest.getId()).build();
+        public TestRequest buildTestRequest() {
+            return TestRequest.newBuilder().setName("Hello").setId(1).build();
         }
     }
 
