@@ -11,7 +11,7 @@ public class GrpcServerRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("grpc://localhost:1101/ru.redhat.forum.demo.gen.DemoService")
+        from("grpc://0.0.0.0:1080/ru.redhat.forum.demo.gen.DemoService")
             .bean(new GrpcMessageBuilder(), "buildTestResponse")
             .log("Body: ${body}");
     }
@@ -21,5 +21,4 @@ public class GrpcServerRoute extends RouteBuilder {
             return TestResponse.newBuilder().setName(testRequest.getName() + " World!!!").setId(testRequest.getId()).build();
         }
     }
-
 }

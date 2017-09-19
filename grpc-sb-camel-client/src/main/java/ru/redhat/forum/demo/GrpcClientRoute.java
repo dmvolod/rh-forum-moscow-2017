@@ -13,7 +13,9 @@ public class GrpcClientRoute extends RouteBuilder {
     public void configure() throws Exception {
         from("timer:foo?period=2000")
             .bean(new GrpcMessageBuilder(), "buildTestRequest")
-            .to("grpc://localhost:1101/ru.redhat.forum.demo.gen.DemoService?method=TestCall")
+            //.to("grpc://localhost:1101/ru.redhat.forum.demo.gen.DemoService?method=TestCall")
+            .to("grpc://{{service:hello-grpc}}/ru.redhat.forum.demo.gen.DemoService?method=TestCall")
+            
             .log("Body: ${body}");
     }
     
