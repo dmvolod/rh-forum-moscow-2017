@@ -11,7 +11,7 @@ public class GrpcServerRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("grpc://0.0.0.0:1080/ru.redhat.forum.demo.gen.DemoService")
+        from("grpc://{{hello-grpc-service}}/ru.redhat.forum.demo.gen.DemoService")
             .bean(new GrpcMessageBuilder(), "buildTestResponse")
             .log("Body: ${body}");
     }
