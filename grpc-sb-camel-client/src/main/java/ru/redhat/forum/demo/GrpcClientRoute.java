@@ -1,5 +1,7 @@
 package ru.redhat.forum.demo;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Random;
 
 import org.apache.camel.builder.RouteBuilder;
@@ -20,8 +22,8 @@ public class GrpcClientRoute extends RouteBuilder {
     }
     
     public class GrpcMessageBuilder {
-        public TestRequest buildTestRequest() {
-            return TestRequest.newBuilder().setName("Hello").setId((new Random()).nextInt(100)).build();
+        public TestRequest buildTestRequest() throws UnknownHostException {
+            return TestRequest.newBuilder().setName("Hello from ip:" + InetAddress.getLocalHost().getHostAddress()).setId((new Random()).nextInt(100)).build();
         }
     }
 
