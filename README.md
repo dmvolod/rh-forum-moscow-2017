@@ -18,4 +18,10 @@ cd grpc-sb-camel-client folder
 
 3. oc new-project rh-forum-camel-demo
 
-4. ./mvnw clean package fabric8:deploy
+4. cd grpc-sb-camel-server folder
+
+./mvnw clean package fabric8:deploy
+
+5. cd grpc-sb-camel-client folder
+
+./mvnw clean package fabric8:deploy
