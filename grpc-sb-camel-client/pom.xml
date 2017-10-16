@@ -102,6 +102,7 @@
         <configuration>
           <profiles>
             <profile>dev</profile>
+            <profile>ose-remote</profile>
           </profiles>
         </configuration>
       </plugin>

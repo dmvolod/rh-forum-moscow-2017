@@ -15,9 +15,16 @@ public class GrpcClientRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
+        /*
         from("timer:foo?period=2000")
             .bean(new GrpcMessageBuilder(), "buildTestRequest")
             .to("grpc://{{hello-grpc-service}}/ru.redhat.forum.demo.gen.DemoService?method=TestCall")            
+            .log("Body: ${body}");
+        */
+        from("timer:foo?period=2000")
+            .bean(new GrpcMessageBuilder(), "buildTestRequest")
+            .to("grpc://{{hello-grpc-service}}/ru.redhat.forum.demo.gen.DemoService?method=TestCall&negotiationType=TLS&keyCertChainResource=classpath:certs/client.pem&" 
+            + "keyResource=classpath:certs/client.key&trustCertCollectionResource=classpath:certs/ca.pem")
             .log("Body: ${body}");
     }
     

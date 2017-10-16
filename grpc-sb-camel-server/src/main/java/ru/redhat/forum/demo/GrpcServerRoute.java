@@ -17,6 +17,11 @@ public class GrpcServerRoute extends RouteBuilder {
         from("grpc://{{hello-grpc-service}}/ru.redhat.forum.demo.gen.DemoService")
             .log("Body: ${body}")
             .bean(new GrpcMessageBuilder(), "buildTestResponse");
+        
+        from("grpc://{{hello-grpc-ssl-service}}/ru.redhat.forum.demo.gen.DemoService?negotiationType=TLS&keyCertChainResource=classpath:certs/server.pem&" 
+             + "keyResource=classpath:certs/server.key&trustCertCollectionResource=classpath:certs/ca.pem")
+            .log("Body: ${body}")
+            .bean(new GrpcMessageBuilder(), "buildTestResponse");
     }
     
     public class GrpcMessageBuilder {
