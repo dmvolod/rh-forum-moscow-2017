@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-grpc-ssl-service
+spec:
+  ports:
+  - name: hello-grpc-ssl-port
+    protocol: TCP
+    port: 1443
+    targetPort: 1443
+  sessionAffinity: None
+status:
+  loadBalancer: {
+    }
