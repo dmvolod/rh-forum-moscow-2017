@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-thrift-ssl-service
+spec:
+  ports:
+  - name: hello-thrift-ssl-port
+    protocol: TCP
+    port: 2443
+    targetPort: 2443
+  sessionAffinity: None
+status:
+  loadBalancer: {
+    }

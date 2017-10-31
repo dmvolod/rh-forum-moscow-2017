@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-thrift-service
+spec:
+  ports:
+  - name: hello-thrift-port
+    protocol: TCP
+    port: 2080
+    targetPort: 2080
+  sessionAffinity: None
+status:
+  loadBalancer: {
+    }

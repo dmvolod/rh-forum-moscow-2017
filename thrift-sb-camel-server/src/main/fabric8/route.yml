@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: hello-thrift-ssl-service
+spec:
+  port:
+    targetPort: hello-thrift-ssl-port
+  tls:
+    termination: passthrough
+  to:
+    kind: Service
+    name: hello-thrift-ssl-service
+    weight: 100
+  wildcardPolicy: None

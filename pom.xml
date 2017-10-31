@@ -10,5 +10,6 @@
   <modules>
     <module>grpc-sb-camel-server</module>
     <module>grpc-sb-camel-client</module>
+    <module>thrift-sb-camel-client</module>
   </modules>
 </project>
