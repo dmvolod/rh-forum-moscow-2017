@@ -164,8 +164,8 @@ objects:
                 resource: limits.memory
           - name: JAVA_APP_DIR
             value: /deployments
-          - name: JAVA_OPTIONS
-            value: -javaagent:/tmp/artifacts/m2/io/prometheus/jmx/jmx_prometheus_javaagent/0.7/jmx_prometheus_javaagent-0.7.jar=9779:/var/run/configmap/prometheus-config/config.yaml
+#          - name: JAVA_OPTIONS
+#            value: -javaagent:/tmp/artifacts/m2/io/prometheus/jmx/jmx_prometheus_javaagent/0.7/jmx_prometheus_javaagent-0.7.jar=9779:/var/run/configmap/prometheus-config/config.yaml
           image: ${APP}:latest
           imagePullPolicy: IfNotPresent
           livenessProbe:
