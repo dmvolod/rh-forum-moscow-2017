@@ -1,0 +1,249 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  labels:
+    provider: fabric8
+    project: grpc-sb-camel-server
+    version: 1.0.0
+    group: ru.redhat.forum.demo
+  name: grpc-sb-camel-server
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: grpc-sb-camel-server-health
+  spec:
+    ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: hello-grpc-service
+  spec:
+    ports:
+    - name: hello-grpc-port
+      protocol: TCP
+      port: 1080
+      targetPort: 1080
+    sessionAffinity: None
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: hello-grpc-ssl-service
+  spec:
+    ports:
+    - name: hello-grpc-ssl-port
+      protocol: TCP
+      port: 1443
+      targetPort: 1443
+    sessionAffinity: None
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: hello-grpc-ssl-service
+  spec:
+    port:
+      targetPort: hello-grpc-ssl-port
+    tls:
+      termination: passthrough
+    to:
+      kind: Service
+      name: hello-grpc-ssl-service
+      weight: 100
+    wildcardPolicy: None
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${APP}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: ${APP}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP}:${IS_TAG}
+    source:
+      contextDir: grpc-sb-camel-server
+      git:
+        uri: ${GIT}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: MAVEN_ARGS_APPEND
+          value: -Dmaven.source.skip=true -Dlicense.skipDownloadLicenses
+        from:
+          kind: ImageStreamTag
+          name: fis-java-openshift:2.0
+        incremental: true
+      type: Source
+    triggers:
+    - type: ConfigChange
+    - imageChange:
+        from:
+          kind: ImageStreamTag
+          name: fis-java-openshift:2.0
+      type: ImageChange
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: ${APP}-hawkular-agent
+  data:
+    hawkular-openshift-agent: |
+      collection_interval_secs: 45
+      endpoints:
+      - type: prometheus
+        protocol: "http"
+        port: 9779
+        path: /metrics
+        metrics:
+        - name: org_apache_camel_MyCamel_ExchangesTotal
+          id: prometheus_MyCamel_ExchangesTotal
+          type: gauge
+        - name: org_apache_camel_MyCamel_MeanProcessingTime
+          id: prometheus_MyCamel_MeanProcessingTime
+          type: gauge
+      - type: "jolokia"
+        protocol: https
+        port: 8778
+        path: /jolokia/
+        credentials:
+          username: jolokia
+          password: supersecretpassword
+        collection_interval_secs: 60
+        metrics:
+        - name: java.lang:type=Threading#ThreadCount
+          type: counter
+          id:   jolokia_MyCamel_VMThreadCount
+        - name: java.lang:type=Memory#HeapMemoryUsage#used
+          type: gauge
+          id:   jolokia_MyCamel_VMHeapMemoryUsed
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: prometheus-config
+  data:
+    config.yaml: |
+      ---
+      lowercaseOutputName: false
+      lowercaseOutputLabelNames: false
+      whitelistObjectNames: ["org.apache.camel:*"]
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: ${APP}
+  spec:
+    replicas: 1
+    strategy:
+      rollingParams:
+        timeoutSeconds: 10800
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          hawkular-openshift-agent: grpc-sb-camel-server-hawkular-agent
+      spec:
+        containers:
+        - env:
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: CONTAINER_CORE_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                resource: limits.cpu
+          - name: CONTAINER_MAX_MEMORY
+            valueFrom:
+              resourceFieldRef:
+                resource: limits.memory
+          - name: JAVA_APP_DIR
+            value: /deployments
+          - name: JAVA_OPTIONS
+            value: -javaagent:/tmp/artifacts/m2/io/prometheus/jmx/jmx_prometheus_javaagent/0.7/jmx_prometheus_javaagent-0.7.jar=9779:/var/run/configmap/prometheus-config/config.yaml
+          image: ${APP}:latest
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: ${APP}
+          ports:
+          - containerPort: 1080
+            name: grpc
+            protocol: TCP
+          - containerPort: 8081
+            name: health
+            protocol: TCP
+          - containerPort: 1443
+            name: sgrpc
+            protocol: TCP
+          - containerPort: 9779
+            name: prometheus
+            protocol: TCP
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              memory: 1024Mi
+              cpu: 500m
+            requests:
+              memory: 512Mi
+              cpu: 100m
+          securityContext:
+            privileged: false
+          volumeMounts:
+          - mountPath: /var/run/secrets/jolokia-pw
+            name: jolokia-pw
+          - mountPath: /var/run/configmap/prometheus-config
+            name: prometheus-config
+          - mountPath: /var/run/configmap/hawkular-agent
+            name: ${APP}-hawkular-agent
+        volumes:
+        - name: jolokia-pw
+          secret:
+            secretName: jolokia-pw
+        - configMap:
+            name: prometheus-config
+          name: prometheus-config
+        - configMap:
+            name: ${APP}-hawkular-agent
+          name: ${APP}-hawkular-agent
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APP}
+        from:
+          kind: ImageStreamTag
+          name: ${APP}:latest
+      type: ImageChange
+parameters:
+- name: IS_TAG
+  value: latest
+- name: APP
+  value: grpc-sb-camel-server
+- name: GIT
+  value: https://github.com/dmvolod/rh-forum-moscow-2017.git
+
