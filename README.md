@@ -42,3 +42,11 @@ Please note, that remote service routing on OpenShift (minishift) supports TLS p
 5. cd grpc-sb-camel-client folder
 
 ./mvnw clean package spring-boot:run -Drun.profiles=ose-remote
+
+
+oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/master/fis-image-streams.json
+oc create -f https://raw.githubusercontent.com/dmvolod/rh-forum-moscow-2017/master/grpc-sb-camel-server/ocp-template/fis2-grpc-server-template.yml
+oc import-image fis-java-openshift --all
+
+oc secrets new jolokia-pw jolokia-pw-secret
+oc new-app --template=grpc-sb-camel-server
