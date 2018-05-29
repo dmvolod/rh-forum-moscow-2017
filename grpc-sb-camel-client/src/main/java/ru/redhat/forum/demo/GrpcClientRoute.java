@@ -21,13 +21,13 @@ public class GrpcClientRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         if (Arrays.asList(environment.getActiveProfiles()).contains("ose-remote")) {
-            from("timer:foo?period=2000")
+            from("timer:foo?period=5000")
                 .bean(new GrpcMessageBuilder(), "buildTestRequest")
                 .to("grpc://{{hello-grpc-service}}/ru.redhat.forum.demo.gen.DemoService?method=TestCall&negotiationType=TLS&keyCertChainResource=classpath:certs/client.pem&" 
                     + "keyResource=classpath:certs/client.key&trustCertCollectionResource=classpath:certs/ca.pem")
                 .log("Body: ${body}");
         } else {
-            from("timer:foo?period=2000")
+            from("timer:foo?period=5000")
                 .bean(new GrpcMessageBuilder(), "buildTestRequest")
                 .to("grpc://{{hello-grpc-service}}/ru.redhat.forum.demo.gen.DemoService?method=TestCall")            
                 .log("Body: ${body}");
