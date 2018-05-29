@@ -1,0 +1,357 @@
+{
+  "id": 2,
+  "title": "Camel - Routes",
+  "originalTitle": "Camel - Routes",
+  "tags": [],
+  "style": "dark",
+  "timezone": "browser",
+  "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
+  "rows": [
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "100px",
+      "panels": [
+        {
+          "title": "Inflight",
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "singlestat",
+          "id": 5,
+          "links": [],
+          "datasource": null,
+          "maxDataPoints": 100,
+          "interval": null,
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(camel_exchanges_inflight)",
+              "intervalFactor": 2,
+              "metric": "camel_exchanges_inflight",
+              "legendFormat": ""
+            }
+          ],
+          "cacheTimeout": null,
+          "format": "none",
+          "prefix": "",
+          "postfix": "",
+          "nullText": null,
+          "valueMaps": [
+            {
+              "value": "null",
+              "op": "=",
+              "text": "N/A"
+            }
+          ],
+          "nullPointMode": "connected",
+          "valueName": "current",
+          "prefixFontSize": "50%",
+          "valueFontSize": "80%",
+          "postfixFontSize": "50%",
+          "thresholds": "",
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(45, 130, 172, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "sparkline": {
+            "show": false,
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "fillColor": "rgba(31, 118, 189, 0.18)"
+          }
+        },
+        {
+          "title": "Total",
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "singlestat",
+          "id": 3,
+          "links": [],
+          "datasource": null,
+          "maxDataPoints": 100,
+          "interval": null,
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(camel_exchanges_total)",
+              "intervalFactor": 2,
+              "metric": "camel_exchanges_total",
+              "legendFormat": "",
+              "interval": ""
+            }
+          ],
+          "cacheTimeout": null,
+          "format": "none",
+          "prefix": "",
+          "postfix": "",
+          "nullText": null,
+          "valueMaps": [
+            {
+              "value": "null",
+              "op": "=",
+              "text": "N/A"
+            }
+          ],
+          "nullPointMode": "connected",
+          "valueName": "current",
+          "prefixFontSize": "50%",
+          "valueFontSize": "80%",
+          "postfixFontSize": "50%",
+          "thresholds": "",
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(49, 174, 44, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "sparkline": {
+            "show": false,
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "fillColor": "rgba(31, 118, 189, 0.18)"
+          },
+          "timeFrom": null
+        },
+        {
+          "title": "Failed",
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "singlestat",
+          "id": 4,
+          "links": [],
+          "datasource": null,
+          "maxDataPoints": 100,
+          "interval": null,
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum(camel_exchanges_failed)",
+              "intervalFactor": 2,
+              "metric": "camel_exchanges_failed",
+              "legendFormat": ""
+            }
+          ],
+          "cacheTimeout": null,
+          "format": "none",
+          "prefix": "",
+          "postfix": "",
+          "nullText": null,
+          "valueMaps": [
+            {
+              "value": "null",
+              "op": "=",
+              "text": "N/A"
+            }
+          ],
+          "nullPointMode": "connected",
+          "valueName": "current",
+          "prefixFontSize": "50%",
+          "valueFontSize": "80%",
+          "postfixFontSize": "50%",
+          "thresholds": "",
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "sparkline": {
+            "show": false,
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "fillColor": "rgba(31, 118, 189, 0.18)"
+          }
+        }
+      ],
+      "title": "Counters"
+    },
+    {
+      "title": "New row",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "id": 1,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "camel_last_processing_time",
+              "intervalFactor": 2,
+              "legendFormat": "last processing time ",
+              "metric": "camel_last_processing_time",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Camel Processing Time",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "ms",
+            "short"
+          ]
+        }
+      ]
+    }
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": null,
+        "includeAll": false,
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "namespace",
+        "options": [
+        ],
+        "query": "label_values(kubernetes_namespace)",
+        "refresh": true,
+        "refresh_on_load": false,
+        "type": "query"
+      },
+      {
+        "allFormat": "glob",
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": null,
+        "includeAll": true,
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "application",
+        "options": [
+          {
+            "text": "All",
+            "value": "",
+            "selected": true
+          }
+        ],
+        "query": "camel_last_processing_time{kubernetes_namespace=\"$namespace\"}",
+        "refresh": true,
+        "refresh_on_load": false,
+        "regex": "/app=\"([^\"]+)\"/",
+        "type": "query"
+      },
+      {
+        "allFormat": "glob",
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": null,
+        "includeAll": false,
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "version",
+        "options": [
+          {
+            "text": "All",
+            "value": "",
+            "selected": true
+          }
+        ],
+        "query": "camel_last_processing_time{kubernetes_namespace=\"$namespace\"}\t",
+        "refresh_on_load": false,
+        "regex": "/version=\"([^\"]+)\"/",
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "schemaVersion": 7,
+  "version": 5,
+  "links": []
+}
+

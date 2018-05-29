@@ -40,7 +40,7 @@
       <artifactId>camel-grpc-starter</artifactId>
       <version>${camel.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -96,6 +96,55 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/docker/${project.artifactId}/${project.version}/build/maven/</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>config.yml</include>
+                  </includes>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <useBaseVersion>true</useBaseVersion>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>io.fabric8</groupId>
+                  <artifactId>agent-bond-agent</artifactId>
+                  <version>1.0.2</version>
+                  <outputDirectory>${project.build.directory}/docker/${project.artifactId}/${project.version}/build/maven/</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  ports:
+  - name: prom
+    protocol: TCP
+    port: 9779
+    targetPort: 9779
+  sessionAffinity: None
+status:
+  loadBalancer: {
+    }
